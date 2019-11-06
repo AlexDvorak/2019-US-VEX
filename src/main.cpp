@@ -35,8 +35,14 @@ int main() {
   vexcodeInit();
   IntakeLeft.setVelocity(50, velocityUnits::pct);
   IntakeRight.setVelocity(50, velocityUnits::pct);
-
+  int k = 0;
+  time_t my_time = time(NULL);
   while (1) {
+    my_time = time(NULL);
+    Brain.Screen.clearScreen();
+    Brain.Screen.print("to #");
+    Brain.Screen.print(k);
+    Brain.Screen.newLine();
     double thrust = Controller1.Axis2.position();
     double rotate = Controller1.Axis4.position();
     DriveFrontRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
@@ -44,34 +50,53 @@ int main() {
     DriveFrontLeft.spin(directionType::fwd, thrust + rotate, velocityUnits::pct);
     DriveBackRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
 
-    if ( Controller1.ButtonL1.pressing() ) {
+    if (Controller1.ButtonL1.pressing()){
+      // Brain.Screen.print("LEFT INTAKE SPINNING");
+      // Brain.Screen.newLine();
       IntakeLeft.spin(directionType::fwd);
     } else {
-      IntakeLeft.stop();
+      IntakeLeft.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
     if(Controller1.ButtonL1.pressing()){
+      // Brain.Screen.print("RIGHT INTAKE SPINNING");
+      // Brain.Screen.newLine();
       IntakeRight.spin(directionType::fwd);
     } else {
-      IntakeRight.stop();
+      IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
     
     if(Controller1.ButtonL2.pressing()){
       Brain.Screen.print("L2 Pressed");
       Brain.Screen.newLine();
-      CubeTrayAngler.rotateTo(0.9166666666666667, rotationUnits::rev, 50, velocityUnits::pct);
+      // Brain.Screen.print("STARTING CTA123123123 STARTTTT");
+      // CubeTrayAngler.rotateTo(0.9166666666666667, rotationUnits::rev, 50, velocityUnits::pct);
+      CubeTrayAngler.rotateTo(-315, rotationUnits::deg, 50, velocityUnits::pct);
+      // Brain.Screen.print(" ----- END");
+      // Brain.Screen.newLine();
     } else {
-      CubeTrayAngler.stop();
+      // Brain.Screen.print("STARTING CTA123123123 STOPPPPP");
+      CubeTrayAngler.stop(brakeType::hold);
+      // Brain.Screen.print(" ----- END");
+      // Brain.Screen.newLine();
     }
     
-    if(Controller1.ButtonR2.pressing()) {
-      Brain.Screen.print("R2 Pressed");
-      Brain.Screen.newLine();
-      CubeTrayAngler.rotateTo(-0.9166666666666667,rotationUnits::rev, 50, velocityUnits::pct);
-    } else {
-      CubeTrayAngler.stop();
-    }
-    vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
+    // if(Controller1.ButtonR2.pressing()) {
+    //   // Brain.Screen.print("STARTING CTA PUSH");
+    //   CubeTrayAngler.rotateTo(-0.9166666666666667,rotationUnits::rev, 50, velocityUnits::pct);
+    //   // Brain.Screen.print(" ----- END");
+    //   // Brain.Screen.newLine();
+    // } else {
+    //   // Brain.Screen.print("CTA STOP PUSH");
+    //   CubeTrayAngler.spin(directionType::fwd, 0.0, percentUnits::pct);
+    //   // Brain.Screen.print(" ----- END");
+    //   // Brain.Screen.newLine();
+    // }
+    Brain.Screen.print("from #");
+    Brain.Screen.print(ctime(&my_time));
+    k++;
   }
+  Brain.Screen.print("LOOPY HAS FAILED US");
+  Brain.Screen.newLine();
 }
 
 // /*----------------------------------------------------------------------------*/
