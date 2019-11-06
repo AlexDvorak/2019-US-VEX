@@ -51,65 +51,28 @@ int main() {
     DriveBackRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
 
     if (Controller1.ButtonL1.pressing()){
-      // Brain.Screen.print("LEFT INTAKE SPINNING");
-      // Brain.Screen.newLine();
       IntakeLeft.spin(directionType::fwd);
     } else {
       IntakeLeft.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
+
     if(Controller1.ButtonL1.pressing()){
-      // Brain.Screen.print("RIGHT INTAKE SPINNING");
-      // Brain.Screen.newLine();
       IntakeRight.spin(directionType::fwd);
     } else {
       IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
     
     if(Controller1.ButtonL2.pressing()){
-      Brain.Screen.print("L2 Pressed");
-      Brain.Screen.newLine();
-      // Brain.Screen.print("STARTING CTA123123123 STARTTTT");
-      // CubeTrayAngler.rotateTo(0.9166666666666667, rotationUnits::rev, 50, velocityUnits::pct);
       CubeTrayAngler.rotateTo(-315, rotationUnits::deg, 50, velocityUnits::pct);
-      // Brain.Screen.print(" ----- END");
-      // Brain.Screen.newLine();
     } else {
-      // Brain.Screen.print("STARTING CTA123123123 STOPPPPP");
       CubeTrayAngler.stop(brakeType::hold);
-      // Brain.Screen.print(" ----- END");
-      // Brain.Screen.newLine();
     }
     
-    // if(Controller1.ButtonR2.pressing()) {
-    //   // Brain.Screen.print("STARTING CTA PUSH");
-    //   CubeTrayAngler.rotateTo(-0.9166666666666667,rotationUnits::rev, 50, velocityUnits::pct);
-    //   // Brain.Screen.print(" ----- END");
-    //   // Brain.Screen.newLine();
-    // } else {
-    //   // Brain.Screen.print("CTA STOP PUSH");
-    //   CubeTrayAngler.spin(directionType::fwd, 0.0, percentUnits::pct);
-    //   // Brain.Screen.print(" ----- END");
-    //   // Brain.Screen.newLine();
-    // }
-    Brain.Screen.print("from #");
-    Brain.Screen.print(ctime(&my_time));
-    k++;
-  }
-  Brain.Screen.print("LOOPY HAS FAILED US");
-  Brain.Screen.newLine();
-}
+    if(Controller1.ButtonR2.pressing()) {
+      CubeTrayAngler.rotateTo(0, rotationUnits::deg, 50, velocityUnits::pct);
+    } else {
+      CubeTrayAngler.stop(brakeType::hold);
+    }
 
-// /*----------------------------------------------------------------------------*/
-// /*                                                                            */
-// /*    Module:       main.cpp                                                  */
-// /*    Author:       C:\Users\AwtyCAD2                                         */
-// /*    Created:      Sat Nov 02 2019                                           */
-// /*    Description:  V5 project                                                */
-// /*                                                                            */
-// /*----------------------------------------------------------------------------*/
-// #include "vex.h"
-// 
-// // ---- START VEXCODE CONFIGURED DEVICES ----
-// // Robot Configuration:
-// // [Name]               [Type]        [Port(s)]
-// 
+  }
+}
