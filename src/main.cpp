@@ -30,19 +30,114 @@
 
 using namespace vex;
 
-int main() {
-  // Initializing Robot Configuration. DO NOT REMOVE!
-  vexcodeInit();
-  IntakeLeft.setVelocity(50, velocityUnits::pct);
-  IntakeRight.setVelocity(50, velocityUnits::pct);
-  int k = 0;
-  time_t my_time = time(NULL);
+competition Competition;
+
+#define PI 3.14159265358979323846
+#define WHEEL_DIAMETER 3
+#define INTAKE_SPEED 75
+#define REVS_PER_DEGREES 0.02
+
+// Utilities //
+float revsPerDegrees (float degrees){
+  return degrees * REVS_PER_DEGREES;
+}
+float revsPerInches(float wheelDiameter, float inches) {
+  return inches / (wheelDiameter * PI);
+}
+
+void setSpeed(int speed) {
+  DriveFrontLeft.setVelocity(speed, velocityUnits::pct);
+  DriveFrontRight.setVelocity(speed, velocityUnits::pct);
+  DriveBackLeft.setVelocity(speed, velocityUnits::pct);
+  DriveBackRight.setVelocity(speed, velocityUnits::pct);
+}
+void driveInches(float inches) {
+  const float revs = revsPerInches(WHEEL_DIAMETER, inches);
+  DriveFrontLeft.rotateFor(revs, rotationUnits::rev, false);
+  DriveFrontRight.rotateFor(revs, rotationUnits::rev, false);
+  DriveBackLeft.rotateFor(revs, rotationUnits::rev, false);
+  DriveBackRight.rotateFor(revs, rotationUnits::rev);
+}
+void rotateDegrees(int degrees) {
+  const float revs = revsPerDegrees(degrees);
+  DriveFrontLeft.rotateFor(revs, rotationUnits::rev, false);
+  DriveFrontRight.rotateFor(revs, rotationUnits::rev, false);
+  DriveBackLeft.rotateFor(-revs, rotationUnits::rev, false);
+  DriveBackRight.rotateFor(-revs, rotationUnits::rev);
+}
+
+// Autonomous //
+void autonomous() {
+
+
+  //  start rotation intake motors
+  IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+  IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+
+  setSpeed(50);
+
+  driveInches(12);
+  rotateDegrees(180);
+
+  //   intakeMotorL.rotateFor( rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
+  // intakeMotorR.rotateFor(-rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
+
+  // //set motor speed
+  // driveMotorFL.setVelocity(50, velocityUnits::pct);
+  // driveMotorFR.setVelocity(50, velocityUnits::pct);
+  // driveMotorBL.setVelocity(50, velocityUnits::pct);
+  // driveMotorBR.setVelocity(50, velocityUnits::pct);
+
+  // // forward
+  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+    
+  // // turn 180
+  // driveMotorFL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
+  // driveMotorFR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  // driveMotorBL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
+  // driveMotorBR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+
+  // //head bacK
+  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+
+  // //push tray
+  // trayMotor.rotateFor(25, rotationUnits::deg);
+  
+  // // go back
+  // driveMotorFL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorFR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  // driveMotorBR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+
+  //   // return tray to original position
+
+  // trayMotor.rotateFor(-25, rotationUnits::deg);
+
+  // //victory spin
+
+  //   driveMotorFL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  //   driveMotorFR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  //   driveMotorBL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  //   driveMotorBR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+
+
+}
+
+// Driver Control //
+//         Controls             //
+//     Axis 2 | Forward/Back    //
+//     Axis 4 | Left/Right      //
+//  Button L1 | Intake          //
+//  Button R1 | Cube Tray Up    //
+//  Button R2 | Cube Tray Down  //
+void drivercontrol(){
   while (1) {
-    my_time = time(NULL);
-    Brain.Screen.clearScreen();
-    Brain.Screen.print("to #");
-    Brain.Screen.print(k);
-    Brain.Screen.newLine();
     double thrust = Controller1.Axis2.position();
     double rotate = Controller1.Axis4.position();
     DriveFrontRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
@@ -62,7 +157,7 @@ int main() {
       IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
     
-    if(Controller1.ButtonL2.pressing()){
+    if(Controller1.ButtonR1.pressing()){
       CubeTrayAngler.rotateTo(-315, rotationUnits::deg, 50, velocityUnits::pct);
     } else {
       CubeTrayAngler.stop(brakeType::hold);
@@ -73,6 +168,15 @@ int main() {
     } else {
       CubeTrayAngler.stop(brakeType::hold);
     }
-
   }
+}
+
+int main() {
+  // Initializing Robot Configuration. DO NOT REMOVE!
+  vexcodeInit();
+  /*
+  Competition.autonomous(autonomous);
+  Competition.drivercontrol(drivercontrol);
+  //*/
+  autonomous();
 }
