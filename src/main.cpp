@@ -37,6 +37,8 @@ competition Competition;
 #define INTAKE_SPEED 75
 #define REVS_PER_DEGREES 0.02
 
+bool trayUp = false;
+
 // Utilities //
 float revsPerDegrees (float degrees){
   return degrees * REVS_PER_DEGREES;
@@ -65,17 +67,29 @@ void rotateDegrees(int degrees) {
   DriveBackLeft.rotateFor(-revs, rotationUnits::rev, false);
   DriveBackRight.rotateFor(-revs, rotationUnits::rev);
 }
+void setTray(bool up) {
+  trayUp = up;
+  const int ang = (up) ? 0 : -315;
+  CubeTrayAngler.rotateTo(ang, rotationUnits::deg, 50, velocityUnits::pct, false);
+}
+void toggleTray() {
+  setTray(!trayUp);
+}
 
 // Autonomous //
 void autonomous() {
 
+  // init
+  Controller1.ButtonL2.pressed(toggleTray);
 
-  //  start rotation intake motors
+  // start rotation intake motors
   IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
   IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
 
-  setSpeed(50);
 
+  setTray(true);
+
+  setSpeed(50);
   driveInches(12);
   rotateDegrees(180);
 
@@ -145,29 +159,18 @@ void drivercontrol(){
     DriveFrontLeft.spin(directionType::fwd, thrust + rotate, velocityUnits::pct);
     DriveBackRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
 
-    if (Controller1.ButtonL1.pressing()){
+    if(Controller1.ButtonL1.pressing()){
       IntakeLeft.spin(directionType::fwd);
     } else {
       IntakeLeft.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
-
     if(Controller1.ButtonL1.pressing()){
       IntakeRight.spin(directionType::fwd);
     } else {
       IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
-    
-    if(Controller1.ButtonR1.pressing()){
-      CubeTrayAngler.rotateTo(-315, rotationUnits::deg, 50, velocityUnits::pct);
-    } else {
-      CubeTrayAngler.stop(brakeType::hold);
-    }
-    
-    if(Controller1.ButtonR2.pressing()) {
-      CubeTrayAngler.rotateTo(0, rotationUnits::deg, 50, velocityUnits::pct);
-    } else {
-      CubeTrayAngler.stop(brakeType::hold);
-    }
+
+    // if(Controller1.ButtonUp)
   }
 }
 
