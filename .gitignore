@@ -1,0 +1,47 @@
+
+
+
+  intakeMotorL.rotateFor( rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
+  intakeMotorR.rotateFor(-rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
+
+  // set motor speed
+  driveMotorFL.setVelocity(50, velocityUnits::pct);
+  driveMotorFR.setVelocity(50, velocityUnits::pct);
+  driveMotorBL.setVelocity(50, velocityUnits::pct);
+  driveMotorBR.setVelocity(50, velocityUnits::pct);
+
+  // forward
+  driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+    
+  // turn 180
+  driveMotorFL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
+  driveMotorFR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  driveMotorBL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
+  driveMotorBR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+
+  // head bacK
+  driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+
+  // push tray
+  trayMotor.rotateFor(25, rotationUnits::deg);
+  
+  // go back
+  driveMotorFL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorFR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+
+  //return tray to original position
+  trayMotor.rotateFor(-25, rotationUnits::deg);
+
+  // victory spin
+  driveMotorFL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  driveMotorFR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
+  driveMotorBL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
+  driveMotorBR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
