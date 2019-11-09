@@ -11,6 +11,7 @@ extern motor DriveBackLeft;
 extern motor DriveFrontLeft;
 extern motor DriveFrontRight;
 extern motor CubeTrayAngler;
+extern motor IntakeArm;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Text.

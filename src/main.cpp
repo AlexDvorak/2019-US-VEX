@@ -24,6 +24,7 @@
 // DriveFrontLeft       motor         20              
 // DriveFrontRight      motor         11              
 // CubeTrayAngler       motor         3               
+// IntakeArm            motor         9               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -34,7 +35,8 @@ competition Competition;
 
 #define PI 3.14159265358979323846
 #define WHEEL_DIAMETER 3
-#define INTAKE_SPEED 75
+#define INTAKE_SPEED 100
+#define CTA_SPEED 15
 #define REVS_PER_DEGREES 0.02
 
 bool trayUp = false;
@@ -69,8 +71,8 @@ void rotateDegrees(int degrees) {
 }
 void setTray(bool up) {
   trayUp = up;
-  const int ang = (up) ? 0 : -315;
-  CubeTrayAngler.rotateTo(ang, rotationUnits::deg, 50, velocityUnits::pct, false);
+  const int ang = (up) ? -315 : 0;
+  CubeTrayAngler.rotateTo(ang, rotationUnits::deg, CTA_SPEED, velocityUnits::pct, false);
 }
 void toggleTray() {
   setTray(!trayUp);
@@ -79,78 +81,33 @@ void toggleTray() {
 // Autonomous //
 void autonomous() {
 
+  // start intake motors
+  // IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+  // IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+
+  // // lift intake arm
+  // IntakeArm.rotateFor(1000, timeUnits::msec);
+
+  // move around
+  setSpeed(75);
+  driveInches(20);
+  driveInches(-20);
+  // rotateDegrees(180);
+  } 
+
+// Driver Control //
+//         Controls               //
+//     Axis 2 | Forward/Back      //
+//     Axis 4 | Left/Right        //
+//  Button L1 | Intake            //
+//  Button L2 | Cube Tray Toggle  //
+//  Button R1 |                   //
+//  Button R2 |                   //
+void usercontrol(void){
   // init
   Controller1.ButtonL2.pressed(toggleTray);
 
-  // start rotation intake motors
-  IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
-  IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
-
-
-  setTray(true);
-
-  setSpeed(50);
-  driveInches(12);
-  rotateDegrees(180);
-
-  //   intakeMotorL.rotateFor( rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
-  // intakeMotorR.rotateFor(-rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
-
-  // //set motor speed
-  // driveMotorFL.setVelocity(50, velocityUnits::pct);
-  // driveMotorFR.setVelocity(50, velocityUnits::pct);
-  // driveMotorBL.setVelocity(50, velocityUnits::pct);
-  // driveMotorBR.setVelocity(50, velocityUnits::pct);
-
-  // // forward
-  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-    
-  // // turn 180
-  // driveMotorFL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorFR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorBL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorBR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-
-  // //head bacK
-  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-  // //push tray
-  // trayMotor.rotateFor(25, rotationUnits::deg);
-  
-  // // go back
-  // driveMotorFL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-  //   // return tray to original position
-
-  // trayMotor.rotateFor(-25, rotationUnits::deg);
-
-  // //victory spin
-
-  //   driveMotorFL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  //   driveMotorFR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  //   driveMotorBL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  //   driveMotorBR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-
-}
-
-// Driver Control //
-//         Controls             //
-//     Axis 2 | Forward/Back    //
-//     Axis 4 | Left/Right      //
-//  Button L1 | Intake          //
-//  Button R1 | Cube Tray Up    //
-//  Button R2 | Cube Tray Down  //
-void drivercontrol(){
+  // loop
   while (1) {
     double thrust = Controller1.Axis2.position();
     double rotate = Controller1.Axis4.position();
@@ -159,27 +116,66 @@ void drivercontrol(){
     DriveFrontLeft.spin(directionType::fwd, thrust + rotate, velocityUnits::pct);
     DriveBackRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
 
-    if(Controller1.ButtonL1.pressing()){
-      IntakeLeft.spin(directionType::fwd);
+    // if(Controller1.ButtonL1.pressing()){
+    //   IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+    // } else {
+    //   IntakeLeft.spin(directionType::fwd, 0.0, velocityUnits::pct);
+    // }
+    // if(Controller1.ButtonL1.pressing()){
+    //   IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
+    // } else {
+    //   IntakeRight.spin(directionType::fwd, 0.0, velocityUnits::pct);
+    // }
+
+    if(Controller1.ButtonR1.pressing())
+      {
+        IntakeLeft.spin(directionType::fwd, 127, velocityUnits::pct);
+      
+      }
+    else if (Controller1.ButtonR2.pressing()) {
+      IntakeLeft.spin(directionType::rev, 127, velocityUnits::pct);
     } else {
-      IntakeLeft.spin(directionType::fwd, 0.0, percentUnits::pct);
-    }
-    if(Controller1.ButtonL1.pressing()){
-      IntakeRight.spin(directionType::fwd);
-    } else {
-      IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
+      IntakeLeft.stop(brakeType::hold);
     }
 
-    // if(Controller1.ButtonUp)
+    if(Controller1.ButtonR1.pressing())
+      {
+        IntakeRight.spin(directionType::fwd, 127, velocityUnits::pct);
+      
+      }
+    else if (Controller1.ButtonR2.pressing()) {
+      IntakeRight.spin(directionType::rev, 127, velocityUnits::pct);
+    } else {
+      IntakeRight.stop(brakeType::hold);
+    }
+
+    // if(Controller1.ButtonR1.pressing()){
+    //   IntakeLeft.spin(directionType::rev, INTAKE_SPEED, velocityUnits::pct);
+    // } else {
+    //   IntakeLeft.spin(directionType::fwd, 0.0, velocityUnits::pct);
+    // }
+    // // if(Controller1.ButtonR1.pressing()){
+    //   IntakeRight.spin(directionType::rev, INTAKE_SPEED, velocityUnits::pct);
+    // } else {
+    //   IntakeRight.spin(directionType::fwd, 0.0, velocityUnits::pct);
+    // }
+
+    if(Controller1.ButtonUp.pressing()) {
+      IntakeArm.spin(directionType::fwd, 127, velocityUnits::pct);
+    } else if(Controller1.ButtonDown.pressing()) {
+      IntakeArm.spin(directionType::rev, 127, velocityUnits::pct);
+    } else {
+      IntakeArm.stop(brakeType::hold);
+    }
   }
 }
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  /*
+  //*
   Competition.autonomous(autonomous);
-  Competition.drivercontrol(drivercontrol);
+  Competition.drivercontrol(usercontrol);
   //*/
-  autonomous();
+  // autonomous();
 }

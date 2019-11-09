@@ -16,6 +16,7 @@ motor DriveBackLeft = motor(PORT10, ratio18_1, false);
 motor DriveFrontLeft = motor(PORT20, ratio18_1, false);
 motor DriveFrontRight = motor(PORT11, ratio18_1, true);
 motor CubeTrayAngler = motor(PORT3, ratio18_1, false);
+motor IntakeArm = motor(PORT9, ratio18_1, false);
 
 // VEXcode generated functions
 
