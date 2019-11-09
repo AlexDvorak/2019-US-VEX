@@ -92,55 +92,6 @@ void autonomous() {
   setSpeed(50);
   driveInches(12);
   rotateDegrees(180);
-
-  //   intakeMotorL.rotateFor( rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
-  // intakeMotorR.rotateFor(-rev_for_dist(wheel_diameter, 20.0f), rotationUnits::rev);
-
-  // //set motor speed
-  // driveMotorFL.setVelocity(50, velocityUnits::pct);
-  // driveMotorFR.setVelocity(50, velocityUnits::pct);
-  // driveMotorBL.setVelocity(50, velocityUnits::pct);
-  // driveMotorBR.setVelocity(50, velocityUnits::pct);
-
-  // // forward
-  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-    
-  // // turn 180
-  // driveMotorFL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorFR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorBL.rotateFor( turn_degrees_revs(180), rotationUnits::rev);
-  // driveMotorBR.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-
-  // //head bacK
-  // driveMotorFL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-  // //push tray
-  // trayMotor.rotateFor(25, rotationUnits::deg);
-  
-  // // go back
-  // driveMotorFL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorFR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBL.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  // driveMotorBR.rotateFor(-rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-  //   // return tray to original position
-
-  // trayMotor.rotateFor(-25, rotationUnits::deg);
-
-  // //victory spin
-
-  //   driveMotorFL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  //   driveMotorFR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-  //   driveMotorBL.rotateFor(-turn_degrees_revs(180), rotationUnits::rev);
-  //   driveMotorBR.rotateFor( rev_for_dist(wheel_diameter, 100.0f), rotationUnits::rev);
-
-
 }
 
 // Driver Control //
@@ -169,17 +120,15 @@ void drivercontrol(){
     } else {
       IntakeRight.spin(directionType::fwd, 0.0, percentUnits::pct);
     }
-
-    // if(Controller1.ButtonUp)
   }
 }
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  /*
+  
   Competition.autonomous(autonomous);
   Competition.drivercontrol(drivercontrol);
-  //*/
+  
   autonomous();
 }
