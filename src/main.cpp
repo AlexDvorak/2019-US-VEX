@@ -116,53 +116,25 @@ void usercontrol(void){
     DriveFrontLeft.spin(directionType::fwd, thrust + rotate, velocityUnits::pct);
     DriveBackRight.spin(directionType::fwd, thrust - rotate, velocityUnits::pct);
 
-    // if(Controller1.ButtonL1.pressing()){
-    //   IntakeLeft.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
-    // } else {
-    //   IntakeLeft.spin(directionType::fwd, 0.0, velocityUnits::pct);
-    // }
-    // if(Controller1.ButtonL1.pressing()){
-    //   IntakeRight.spin(directionType::fwd, INTAKE_SPEED, velocityUnits::pct);
-    // } else {
-    //   IntakeRight.spin(directionType::fwd, 0.0, velocityUnits::pct);
-    // }
-
-    if(Controller1.ButtonR1.pressing())
-      {
+    if (Controller1.ButtonR1.pressing()) {
         IntakeLeft.spin(directionType::fwd, 127, velocityUnits::pct);
-      
-      }
-    else if (Controller1.ButtonR2.pressing()) {
+    } else if (Controller1.ButtonR2.pressing()) {
       IntakeLeft.spin(directionType::rev, 127, velocityUnits::pct);
     } else {
       IntakeLeft.stop(brakeType::hold);
     }
 
-    if(Controller1.ButtonR1.pressing())
-      {
+    if (Controller1.ButtonR1.pressing()) {
         IntakeRight.spin(directionType::fwd, 127, velocityUnits::pct);
-      
-      }
-    else if (Controller1.ButtonR2.pressing()) {
+    } else if (Controller1.ButtonR2.pressing()) {
       IntakeRight.spin(directionType::rev, 127, velocityUnits::pct);
     } else {
       IntakeRight.stop(brakeType::hold);
     }
 
-    // if(Controller1.ButtonR1.pressing()){
-    //   IntakeLeft.spin(directionType::rev, INTAKE_SPEED, velocityUnits::pct);
-    // } else {
-    //   IntakeLeft.spin(directionType::fwd, 0.0, velocityUnits::pct);
-    // }
-    // // if(Controller1.ButtonR1.pressing()){
-    //   IntakeRight.spin(directionType::rev, INTAKE_SPEED, velocityUnits::pct);
-    // } else {
-    //   IntakeRight.spin(directionType::fwd, 0.0, velocityUnits::pct);
-    // }
-
-    if(Controller1.ButtonUp.pressing()) {
+    if (Controller1.ButtonUp.pressing()) {
       IntakeArm.spin(directionType::fwd, 127, velocityUnits::pct);
-    } else if(Controller1.ButtonDown.pressing()) {
+    } else if (Controller1.ButtonDown.pressing()) {
       IntakeArm.spin(directionType::rev, 127, velocityUnits::pct);
     } else {
       IntakeArm.stop(brakeType::hold);
