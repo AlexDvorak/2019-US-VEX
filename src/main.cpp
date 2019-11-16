@@ -71,7 +71,7 @@ void rotateDegrees(int degrees) {
 }
 void setTray(bool up) {
   trayUp = up;
-  const int ang = (up) ? -315 : 0;
+  const int ang = (up) ? -450 : 0;
   CubeTrayAngler.rotateTo(ang, rotationUnits::deg, CTA_SPEED, velocityUnits::pct, false);
 }
 void toggleTray() {
